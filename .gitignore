@@ -1,0 +1,9 @@
+# .gitignore file for AOK repo
+*
+!*/
+!*.do
+!.gitignore
+!data_description_EN.xlsx
+!README.md
+!LICENSE
+
