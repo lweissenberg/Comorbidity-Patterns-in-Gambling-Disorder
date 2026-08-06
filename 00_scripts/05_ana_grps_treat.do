@@ -2,7 +2,7 @@
 * Project: 		AOK - Comorbidities
 * DO_05: 		Generate quarterly sick-leave-day variable for later
 *               merging into the Analysis DF. Kept only as a presence/
-*               "was insured this quarter" signal used in 07_Anal_DS.do's
+*               "was insured this quarter" signal used in 07_Analysis_DS.do's
 *               panel-cleaning step
 * Startdate:	25.10.2025
 * Last Change:	13.07.2026

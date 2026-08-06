@@ -129,13 +129,13 @@ do "$script\06_ana_grps_ICD10_diag.do"
 *				'ana_grp_demo_yyyyq.dta'
 *				'ana_grp_treat_yyyyq.dta'
 *				'ana_grp_diag_yyyyq.dta'
-* Output:		'anal_df_y.dta'
-*				'anal_df_yyyyq.dta'
-do "$script\07_Anal_DS.do"
+* Output:		'analysis_df_y.dta'
+*				'analysis_df_yyyyq.dta'
+do "$script\07_Analysis_DS.do"
 
 // 8. Assess DS Balance and get Study Size
-* Input:		'anal_df_y.dta'
-* Output:		'anal_df_y_case_mc_2.dta'
+* Input:		'analysis_df_y.dta'
+* Output:		'analysis_df_y_case_mc_2.dta'
 *				'psm_case_pool.dta'
 *				'psm_mc_control_pool.dta'
 do "$script\08_Study_Size.do"
@@ -143,7 +143,7 @@ do "$script\08_Study_Size.do"
 // 9. PSM; Alignment of Time; Check Cov. Balance
 * Input:		'psm_case_pool.dta'
 * 				'psm_mc_control_pool.dta'
-* 				'anal_df_y_case_mc_2.dta'
+* 				'analysis_df_y_case_mc_2.dta'
 * Output:		'event_case_mc.dta'
 *				'used_controls_mcpool'
 *				'event_case_mc_varsummary.xlsx'
@@ -160,7 +160,7 @@ do "$script\09_PSM.do"
 *				'incident_cases_and_number_cc_sets.emf'
 *				'combined_psych_corrs1.emf', 'combined_psych_corrs2.emf'
 *				'average_number_psychiatric_diagnoses.emf'
-do "$script\10_Anal.do"
+do "$script\10_Analysis.do"
 
 /*********************************************************
 * End of Master-Do-File

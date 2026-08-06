@@ -3,14 +3,14 @@
 * DO_08: 		Get Study size | Important for Figure 1 
 * Startdate:	27.10.2025
 * Last Change:	13.07.2026
-* Input:		'anal_df_y.dta'
-* Output:		'anal_df_y_case_mc_2.dta'
+* Input:		'analysis_df_y.dta'
+* Output:		'analysis_df_y_case_mc_2.dta'
 *				'psm_case_pool.dta'
 *				'psm_mc_control_pool.dta'
 *******************************************************************/
 
 // 1: Import data 
-use "$data_work\anal_df_y.dta", clear
+use "$data_work\analysis_df_y.dta", clear
 
 * We drop at this stage the unmatched control group representing the overall insured
 * population, obtained during the review process after the paper's initial
@@ -175,7 +175,7 @@ preserve
 restore
 
 // 6. Save data 
-save "$data_work\anal_df_y_case_mc_2.dta", replace
+save "$data_work\analysis_df_y_case_mc_2.dta", replace
 clear all
 
 /****************

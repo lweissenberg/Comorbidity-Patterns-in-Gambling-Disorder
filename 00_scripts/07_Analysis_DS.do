@@ -8,8 +8,8 @@
 *				'ana_grp_demo_yyyyq.dta'
 *				'ana_grp_treat_yyyyq.dta'
 *				'ana_grp_diag_yyyyq.dta'
-* Output:		'anal_df_y.dta' 	--> aggregated to years 
-*				'anal_df_yyyyq.dta'	--> would not recommend to use this 
+* Output:		'analysis_df_y.dta' 	--> aggregated to years 
+*				'analysis_df_yyyyq.dta'	--> would not recommend to use this 
 *******************************************************************/
 
 // 1: Create fully balanced DS to merge into: EACH ANO x YYYYQ
@@ -82,7 +82,7 @@ gen age = year - yob
 label variable age "Age in Years"
 
 // 10: Save
-save "$data_work\anal_df_yyyyq.dta", replace
+save "$data_work\analysis_df_yyyyq.dta", replace
 
 // 11: Create Yearly Analysis DF
 
@@ -133,7 +133,7 @@ label variable age_grp "Age Group (Years)"
 
 
 // 13: Save Data
-save "$data_work\anal_df_y.dta", replace
+save "$data_work\analysis_df_y.dta", replace
 clear all 
 
 /****************

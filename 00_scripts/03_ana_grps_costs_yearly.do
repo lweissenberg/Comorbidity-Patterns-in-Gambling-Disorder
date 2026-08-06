@@ -2,7 +2,7 @@
 * Project: 		AOK - Comorbidities
 * DO_03: 		Create yearly total-expenditure variable for later merging
 *               into the analysis df. Kept only as a presence "was insured
-*               this year" signal used in 07_Anal_DS.do's panel-cleaning
+*               this year" signal used in 07_Analysis_DS.do's panel-cleaning
 *               step 
 * Note:			Only 2012 to 2023 is available on yearly basis 				 
 * Startdate:	16.10.2025

@@ -5,7 +5,7 @@
 * Last Change:	13.07.2026
 * Input:		'psm_case_pool.dta'
 * 				'psm_mc_control_pool.dta'
-* 				'anal_df_y_case_mc_2.dta'
+* 				'analysis_df_y_case_mc_2.dta'
 * Output:		'event_case_mc.dta'
 				'used_controls_mcpool'
 *				'event_case_mc_varsummary.xlsx' (name/label/min/max/missing)
@@ -20,7 +20,7 @@ use "$data_work\psm_case_pool.dta", clear
 append using "$data_work\psm_mc_control_pool.dta"
 tempfile matchdata
 save `matchdata'
-use "$data_work\anal_df_y_case_mc_2.dta"
+use "$data_work\analysis_df_y_case_mc_2.dta"
 tempfile analysis
 save `analysis'
 distinct ano if ever_gd
