@@ -26,7 +26,7 @@ restore
 
 // 3: Create # of unique psychiatric diag. excl. GD
 gen year = floor(yyyyq / 10)
-
+preserve
 		// Bugs (both were connected) present in the original submission, now 
 		// corrected:
 		// 1) Deduplication was performed at (ano, yyyyq, icd) instead of (ano, year,
