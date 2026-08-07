@@ -59,11 +59,14 @@ drop _merge
 distinct ano 
 distinct ano if gambl_dis_diag == 1 
 distinct ano if gambl_dis_diag == 0
-drop if total_exp == . & sick_d_q == . &  keep_ind == .
+count
+drop if total_exp == . & sick_d_q == . &  keep_ind == . & insur_type == .
+count
 distinct ano 
 distinct ano if gambl_dis_diag == 1 
 distinct ano if gambl_dis_diag == 0
 drop if total_exp == 0 & insur_type == . & keep_ind == . & sick_d_q == .
+count
 distinct ano 
 distinct ano if gambl_dis_diag == 1 
 distinct ano if gambl_dis_diag == 0
