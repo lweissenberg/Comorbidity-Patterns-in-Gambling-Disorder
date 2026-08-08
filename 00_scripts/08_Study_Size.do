@@ -12,13 +12,6 @@
 // 1: Import data 
 use "$data_work\analysis_df_y.dta", clear
 
-* We drop at this stage the unmatched control group representing the overall insured
-* population, obtained during the review process after the paper's initial
-* submission; not part of the original analysis group used in the present
-* study
-drop if ana_grp_uc == 1
-drop ana_grp_uc
-
 // 2: create diagnostic flags 
 bysort ano: egen byte ever_gd = max(gambl_dis_diag)
 label variable ever_gd "Individual has at least once been diagnosed with GD"

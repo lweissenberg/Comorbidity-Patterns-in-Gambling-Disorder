@@ -42,12 +42,12 @@ shell powershell "Get-CimInstance Win32_VideoController | Select-Object -ExpandP
 di "================================================================"
 
 /**************************************************************
-* Master-Do-File:	AOK - Comorbidities
+* Master-Do-File:	AOK - Comorbidities
 * Journal:
 * Author:			Lorenz Weißenberg & Dr. Steffen Otterbach
 * Stata:			Version 19.5; MP-Parallel Edition
 * Startdate:		01.10.2025
-* Last Change:		20.07.2026
+* Last Change:		20.07.2026
 **************************************************************/
 
 * Set seed for overall reproducibility. However, not needed as output 

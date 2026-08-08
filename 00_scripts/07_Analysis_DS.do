@@ -54,22 +54,20 @@ drop _merge
 merge 1:1 ano yyyyq using "$data_work\ana_grp_treat_yyyyq.dta"
 drop _merge
 
+* We drop at this stage the unmatched control group representing the overall insured
+* population, obtained during the review process after the paper's initial
+* submission; not part of the original analysis group used in the present
+* study
+drop if ana_grp_uc == 1
+drop ana_grp_uc
+
 // 7: Drop obs. where we don't have information -> they are just there
-* because we created in Step 1 (above) a fully balanced df 
-distinct ano 
-distinct ano if gambl_dis_diag == 1 
-distinct ano if gambl_dis_diag == 0
-count
-drop if total_exp == . & sick_d_q == . &  keep_ind == . & insur_type == .
-count
-distinct ano 
-distinct ano if gambl_dis_diag == 1 
-distinct ano if gambl_dis_diag == 0
-drop if total_exp == 0 & insur_type == . & keep_ind == . & sick_d_q == .
-count
-distinct ano 
-distinct ano if gambl_dis_diag == 1 
-distinct ano if gambl_dis_diag == 0
+* because we created in Step 1 (above) a fully balanced df -> exp = 0 in some years where ind. is not insured 
+* -> insur type & sick_d_q == . most important indicators, if exp > 0 we assume he was insured 
+count 
+drop if (missing(total_exp) & missing(sick_d_q) & missing(keep_ind) & missing(insur_type)) ///
+    | (total_exp == 0 & missing(insur_type) & missing(keep_ind) & missing(sick_d_q))
+count 
 
 // 8: replace missing obs with 0 for diag -> No diag. is == 0 
 local vars F00_F99_nopg gambl_dis_diag F10_F19 F10 F17 other_psych F30_F39 F32_F33 F40_F48 F40 F41 F42 F43 F50_F59 F60_F69_noPG F99 keep_ind num_pd 
@@ -106,7 +104,7 @@ foreach v of var * {
 * person-year's value from the latest quarter with data. Do not change it,
 * spatial_str feeds the matching in 09
 sort ano yyyyq
-collapse (max) num_pd  yob age female german dead_end dead yod ana_grp_gd ana_grp_mc ana_grp_uc  F00_F99_nopg gambl_dis_diag F10_F19 F10 F17 other_psych F30_F39 F32_F33 F40_F48 F40 F41 F42 F43 F50_F59 F60_F69_noPG F99 (lastnm) spatial_str insur_type, by(ano year)
+collapse (max) num_pd  yob age female german dead_end dead yod ana_grp_gd ana_grp_mc  F00_F99_nopg gambl_dis_diag F10_F19 F10 F17 other_psych F30_F39 F32_F33 F40_F48 F40 F41 F42 F43 F50_F59 F60_F69_noPG F99 (lastnm) spatial_str insur_type, by(ano year)
 
 *11.3 reapply label 
 foreach v of var * {
