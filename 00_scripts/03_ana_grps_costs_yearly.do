@@ -19,8 +19,6 @@ rename jahr year
 rename ausg_gesamt total_exp
 label variable year "Year"
 label variable total_exp "Total expenditures [€] reimbursed by the AOK"
-* interestingly we record 84 observations of neg. expenditures
-* -> reimbursement artefacts
 keep ano year total_exp
 
 // 3: Save data

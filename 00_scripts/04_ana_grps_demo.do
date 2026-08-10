@@ -34,8 +34,6 @@ drop spatial_str
 rename spatial_num spatial_str
 
 // 3: Create dummies for descriptive groups of 'vart' = type of insurance coverage
-* we use this only as a presence indicator to later determine if someone was insured 
-* during the corresponding year 
 rename vart insur_type
 recast float insur_type
 label variable insur_type "Type of health insurance / beneficiary group"

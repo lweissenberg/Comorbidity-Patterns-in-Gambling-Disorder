@@ -15,7 +15,7 @@
 * NOTE: the row order produced here is load-bearing. psmatch2 with
 * noreplacement matches treated units in the order they appear, so the
 * cases-then-controls order of this append determines which case gets which
-* control. Do not sort matchdata
+* control. Do not sort in a different way if you want to obtain exactly the same results. 
 use "$data_work\psm_case_pool.dta", clear
 append using "$data_work\psm_mc_control_pool.dta"
 tempfile matchdata
@@ -100,7 +100,7 @@ forvalues i = 1/2 {
 * 3: END
 ********************************/
 
-// 4: Tidy DF for Control units -> could be replaced by a shorter reshape command 
+// 4: Tidy DF
 use "$data_work\used_controls_mcpool.dta", clear
 gen matched_treated_ano = .
 forvalues i = 1/2 {

@@ -8,24 +8,6 @@
 // 1: Import data 
 use "$data_work\event_case_mc.dta", clear 
 tab year t_event, col
-* show data structure and diagnosis example; uses different match_IDs than the
-* listing in 09, so no individual appears in both listings (09 shows
-* demographics, 10 shows diagnoses -> never both for the same person);
-* variable guide:
-*	ano          - anonymous individual ID
-*	match_ID     - matched set (1 case + 2 controls)
-*	ever_gd      - 1 = case (ever diagnosed with GD), 0 = matched control
-*	gvar         - 1 only in the case's index year (first GD diagnosis), else 0
-*	year         - calendar year
-*	t_event      - year relative to the index year (for cases: gvar == 1 at t_event == 0)
-*	num_pd       - # of unique psychiatric diagnoses in that year (3-character ICD-10-GM codes, excl. F63.0)
-*	F00_F99_nopg ... F99 - binary: 1 = at least one diagnosis in the respective
-*	                       ICD-10-GM block/subcategory in that year (Table 1), 0 = none
-* how to read: each sepby-block is one matched set; per relative year a set
-* contributes 3 rows (case + 2 controls) as long as the case is observed.
-* Comparing the case row's F-indicators with its two control rows at the same
-* t_event is the within-set comparison the clogit models estimate
-
 sort match_ID ano t_event
 list if inlist(match_ID, 10, 11, 12, 13, 14), sepby(match_ID) noobs
 
@@ -100,9 +82,7 @@ graph export "$graph\incident_cases_and_number_cc_sets.emf", replace
 * 3: COMORBIDITIES 
 ********************************************************************/
 
-* 3.0: initialize pooled collector files; each disorder section below
-* appends its prevalence estimates (mean lb ub) and CORs
-* (COR SE z p stars lb ub), tagged by block, for later range queries
+* 3.0: initialize pooled result files
 clear
 save "$data_work\prev_pooled.dta", replace emptyok
 save "$data_work\cors_pooled.dta", replace emptyok
@@ -172,10 +152,10 @@ twoway ///
     plotregion(margin(2 2 2 2)) plotregion(lstyle(none)) ///
     scheme(s1mono)
 graph save "$graph/g1.gph", replace
-** IF YOU WANT TO DO IT WITH FULL OUTPUT USE THIS COMMAND: 
+** IF YOU WANT TO DO IT WITH FULL STATA OUTPUT USE THIS COMMAND: 
 * --> Results are exactly the same 
 * if option r or vce(cluster match_ID) for se does not matter, always applies robust clustered se conditional 
-* on matching var. 
+* on matching var. We show the output for this category to verify statsby works as intended 
 use "$data_work\event_case_mc.dta", clear 
 bysort t_event: clogit ever_gd F00_F99_nopg, group(match_ID) vce(cluster match_ID) or  
 
@@ -1129,8 +1109,6 @@ replace t_event = t_event + 5
 bysort ever_gd: sum num_pd if t_event == 5
 nbreg num_pd i.t_event##i.ever_gd, vce(cluster match_ID)
 margins i.t_event#i.ever_gd, level(95) post
-* norestore: parmest replaces the data in memory with the estimates,
-* avoiding the save/reload round-trip via a results file
 parmest, norestore
 
 gen ever_gd = .
@@ -1193,20 +1171,13 @@ save "$data_work\cors_pooled.dta", replace
 * open-format copy for sharing (whitelisted in .gitignore)
 export delimited using "$table\cors_pooled.csv", replace datafmt
 
-* During the pre-index period, CORs ranged from 1.67 to 5.61, 
+* Manuscript: "During the pre-index period, CORs ranged from 1.67 to 5.61" 
 tabstat COR if t_event == -5, stat(min max) format(%9.2f)
 tabstat COR if t_event == -1, stat(min max) format(%9.2f)
 tabstat COR if inrange(t_event, -5, -1), stat(min max) format(%9.2f)
-*  -> t-5: 1.82 (F50_F59) to 3.80 (other_psych); t-1: 1.86 (F50_F59) to
-*     5.61 (other_psych); pre-index overall 1.67 to 5.61, as quoted.
-*     "rising" holds for both range endpoints, though barely for the lower
-*     one (1.82 -> 1.86); at block level F99 is the one series that falls
-*     from t-5 (2.52) to t-1 (2.34)
 
 * Manuscript: "increasing as t0 approached and peaking across all categories in the index year (range: 3.14–16.03)."
-* the range is checked here, "peaking" in the profile below
 tabstat COR if t_event == 0, stat(min max) format(%9.2f)
-*  -> 3.14 (F50_F59) to 16.03 (F10), as quoted
 
 * Manuscript: "declined over the post-index period, ranging from 1.90 to 10.80, with the highest values generally following t0 and gradually declining over subsequent years."
 tabstat COR if t_event == 1, stat(min max) format(%9.2f)
@@ -1214,7 +1185,7 @@ tabstat COR if t_event == 5, stat(min max) format(%9.2f)
 tabstat COR if inrange(t_event, 1, 5), stat(min max) format(%9.2f)
 *  -> t+1: 2.49 (F50_F59) to 10.80 (other_psych); t+5: 1.90 (F50_F59) to
 *     8.10 (other_psych); post-index overall 1.90 to 10.80, as quoted.
-*     Both range endpoints decline from t+1 to t+5; the single block-level
+*     Both range endpoints decline from t+1 to t+5; the single 
 *     exception is F40, marginally higher at t+5 (4.14) than at t+1 (4.06)
 
 * Manuscript: "All reported CORs were greater than 1 and statistically significant at the 1% level"

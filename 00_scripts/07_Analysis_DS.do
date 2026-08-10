@@ -53,10 +53,7 @@ drop _merge
 merge 1:1 ano yyyyq using "$data_work\ana_grp_treat_yyyyq.dta"
 drop _merge
 
-* We drop at this stage the unmatched control group representing the overall insured
-* population, obtained during the review process after the paper's initial
-* submission; not part of the original analysis group used in the present
-* study
+* We drop at this stage the unmatched control group
 drop if ana_grp_uc == 1
 drop ana_grp_uc
 
@@ -76,8 +73,6 @@ foreach var of local vars {
 
 // 9: Final adjustments
 drop if year > yod
-drop if missing(yob)
-drop if year < yob 
 gen age = year - yob
 label variable age "Age in Years"
 
@@ -99,9 +94,6 @@ foreach v of var * {
  }
  
 *11.2 collapse
-* this sort is load-bearing and really important to keep: (lastnm) reads the row order, so it takes each
-* person-year's value from the latest quarter with data. Do not change it,
-* spatial_str feeds the matching in 09
 sort ano yyyyq
 collapse (max) num_pd  yob age female german dead_end dead yod ana_grp_gd ana_grp_mc  F00_F99_nopg gambl_dis_diag F10_F19 F10 F17 other_psych F30_F39 F32_F33 F40_F48 F40 F41 F42 F43 F50_F59 F60_F69_noPG F99 (lastnm) spatial_str insur_type, by(ano year)
 
@@ -110,7 +102,7 @@ foreach v of var * {
 	label var `v' `"`l`v''"'
 }
 
-// 12: gen age groups; age groups of Gambling Survey (Buth, 2025) used 
+// 12: gen age groups
 gen age_grp = .
 replace age_grp = 1 if age <=17
 replace age_grp = 2 if age >=18 & age <=20

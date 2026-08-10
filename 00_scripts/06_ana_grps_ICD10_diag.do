@@ -185,22 +185,16 @@ label values F99  truefalse_lbl
 
 // 5: merge with temp files
 merge m:1 ano yyyyq using `keep_ind', nogen
-* the keep_ind merge adds back person-quarters that had only non-F diagnoses;
-replace year = floor(yyyyq / 10) // not really needed but otherwise at this step
-* year will be bugged 
 merge m:1 ano year using `num_pd', nogen
 
 // 6: Collapse to one row per individual-quarter
 drop icd
 ds ano yyyyq, not
 local vars `r(varlist)'
-
 foreach v of local vars {
     local lab_`v' : variable label `v'
 }
-
 collapse (max) `vars', by(ano yyyyq)
-
 foreach v of local vars {
     label variable `v' "`lab_`v''"
     if "`v'" != "num_pd" label values `v' truefalse_lbl
@@ -209,7 +203,7 @@ foreach v of local vars {
 label var num_pd "Received # unique psychiatric diag. (ICD-10-GM 3 character code; excl. GD)"
 
 // 7: Save data
-drop year // not needed anymore we merge on yyyyq 
+drop year
 save "$data_work\ana_grp_diag_yyyyq.dta", replace
 clear all
 

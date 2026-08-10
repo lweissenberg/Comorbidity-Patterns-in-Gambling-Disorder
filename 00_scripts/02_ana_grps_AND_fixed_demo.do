@@ -23,9 +23,6 @@ capture label define truefalse_lbl 0 "FALSE" 1 "TRUE"
 	gen byte ana_grp_mc = (ana_grp == 0)
 	label values ana_grp_mc truefalse_lbl
 	label variable ana_grp_mc "Age & Sex Matched Controls Analysis Grp."
-
-	* the following group is later dropped for the reasons specified in  
-	* the master do-file (see 00_Master.do)
 	gen byte ana_grp_uc = (ana_grp == 2)
 	label variable ana_grp_uc "Unmatched Controls Analysis Grp."
 	label values ana_grp_uc truefalse_lbl
@@ -47,10 +44,6 @@ capture label define truefalse_lbl 0 "FALSE" 1 "TRUE"
 
 	*2.5 dead
 	gen byte dead_end = (yod != .)
-	* our observation period ends in 2024, so a death recorded for 2025 lies 
-	* outside the window and we let the person count as alive at the end of it
-	* --> Reasoning: We do not want to incorporate future information
-	* Note: Does not matter for the present work 
 	replace dead_end = 0 if yod == 2025
 	label variable dead_end "Mortality status at end of observation period (1 = dead, 0 = alive)"
 	label values dead_end truefalse_lbl

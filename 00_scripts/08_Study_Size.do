@@ -108,10 +108,7 @@ restore
 *5.2: Potential Pre-Matched CONTROLS
 * Controls must be observed in all 14 years (2011-2024) so that a control is
 * eligible at any index year with the full window available, whereas cases only
-* need t-1 to t-3. This is deliberate but asymmetric: it selects controls on
-* continuous AOK coverage (long-term stayers), not on health. Within a set the
-* asymmetry is absorbed in 09, which drops control rows in relative years where
-* the case is not observed
+* need t-1 to t-3.
 preserve
 	drop if ana_grp_gd == 1
 	distinct ano
