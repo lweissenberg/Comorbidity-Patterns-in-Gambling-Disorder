@@ -42,7 +42,6 @@ preserve
 	replace icd = substr(icd, 1, 3) // based on 3 character code due to censoring
 	// really rare diagnoses (less than 100 cases among all insurees)
 	duplicates drop ano year icd, force
-	tab icd 
 	keep ano year
 	gen num_pd = 1
 	collapse (sum) num_pd, by(ano year)
@@ -100,9 +99,7 @@ tab icd if gambl_dis_diag == 1
 		* outpatient, and, for inpatients, whether the diagnosis was primary or
 		* secondary. Interpret with caution: this tabulates every diagnosis
 		* record across the full observation period, not just each patient's
-		* first (index) diagnosis, so temporal ordering within a year or quarter
-		* cannot be established, and one patient can contribute records to
-		* multiple categories across multiple years
+		* first (index) diagnosis
 		tab inpat_GD_diag_main
 		tab inpat_GD_diag_sec
 		tab outpat_GD_diag

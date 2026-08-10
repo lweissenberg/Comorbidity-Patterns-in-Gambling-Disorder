@@ -23,8 +23,6 @@ save `matchdata'
 use "$data_work\analysis_df_y_case_mc_2.dta"
 tempfile analysis
 save `analysis'
-distinct ano if ever_gd
-distinct ano if ever_gd == 0 
 
 // 2: Create fresh tracking files
 clear
@@ -37,7 +35,6 @@ save "$data_work\used_controls_mcpool.dta", replace
 ********************************/
 use `matchdata', clear
 levelsof year if ever_gd & inrange(year, 2014, 2024), local(years)
-display "`years'"
 
 * Bug present in the original submission, now corrected: the loop nesting
 * order was: 
@@ -195,39 +192,6 @@ sdtest age if t_event == 0, by(ever_gd)
 sdtest spatial_str if t_event == 0, by(ever_gd)
 
 stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0, by(ever_gd)
-/*********************************
-* ADDITIONAL COV. BALANCE EVIDENCE
-**********************************/
-
-* interesting but not reported 
-* across calendar yrs. in t_0
-
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2014, by(ever_gd)
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2015, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2016, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2017, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2018, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2019, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2020, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2021, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2022, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2023, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0 &  year == 2024, by(ever_gd) 
-
-* across all relative yrs.
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == -5, by(ever_gd)
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == -4, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == -3, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == -2, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == -1, by(ever_gd)  
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 0, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 1, by(ever_gd)  
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 2, by(ever_gd)  
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 3, by(ever_gd)  
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 4, by(ever_gd) 
-stddiff age german male spatial_str i.spatial_str i.age_grp if t_event == 5, by(ever_gd) 
-* not only balanced in matching year, but also balanced in all other yrs.,
-* though restricted by the fact that missing values are possible in non t_0 yrs
 
 * show data structure and matching examples; variable guide:
 *	ano                 - anonymous individual ID

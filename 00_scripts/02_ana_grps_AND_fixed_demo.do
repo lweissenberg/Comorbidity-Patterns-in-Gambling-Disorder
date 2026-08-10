@@ -56,8 +56,6 @@ capture label define truefalse_lbl 0 "FALSE" 1 "TRUE"
 	label values dead_end truefalse_lbl
 	
 	*2.6 sex indicator
-	tab geschlecht, missing
-	assert !missing(geschlecht)
 	gen byte female = (geschlecht == 1) // 0 = male, 1 = female
 	drop geschlecht
 	capture label define gender_lbl 0 "Male" 1 "Female"

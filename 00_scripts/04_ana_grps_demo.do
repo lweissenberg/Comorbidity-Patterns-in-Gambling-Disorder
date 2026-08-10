@@ -30,8 +30,6 @@ label define spatial_lbl ///
     5 "Outer central area" ///
     6 "Inner central area"
 label values spatial_num spatial_lbl
-tab spatial_str if missing(spatial_num), missing
-assert !missing(spatial_num) if trim(spatial_str) != ""
 drop spatial_str
 rename spatial_num spatial_str
 

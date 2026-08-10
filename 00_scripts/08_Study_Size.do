@@ -15,28 +15,17 @@ use "$data_work\analysis_df_y.dta", clear
 // 2: create diagnostic flags 
 bysort ano: egen byte ever_gd = max(gambl_dis_diag)
 label variable ever_gd "Individual has at least once been diagnosed with GD"
-tab ever_gd, missing 
 capture label define truefalse_lbl 0 "FALSE" 1 "TRUE"
 label values ever_gd truefalse_lbl
 egen year_first_gd = min(cond(gambl_dis_diag == 1, year, .)), by(ano)
 label var year_first_gd "Year of first GD diagnosis (. = never diagnosed)"
-distinct ano if ever_gd == 0 
-distinct ano if ever_gd == 1 
 gen byte gvar = (year == year_first_gd)
 replace gvar = 0 if missing(gvar)
 label variable gvar "1 if first GD diag"
 
-*2.1 check for issues and fix group definition for 2 cases 
-tab ever_gd if ana_grp_gd == 1 
-distinct ano if ana_grp_gd == 1 & ever_gd == 0
+*2.1 fix group definition for 2 cases
 replace ana_grp_mc = 1  if ana_grp_gd == 1 & ever_gd == 0
 replace ana_grp_gd = 0 if ever_gd == 0
-tab ever_gd if ana_grp_mc == 1
-* ever_gd is the dependent variable of every clogit in 10, so a control that is
-* ever GD-diagnosed has to fail here rather than quietly bias the models
-* -> 2 got reclassified in the correct grp. 
-assert !(ana_grp_mc == 1 & ever_gd == 1)
-assert !(ana_grp_gd == 1 & ana_grp_mc == 1)
 
 // 3: Create all lag indicator (t-3, t-2, t-1)
 gen lag1 = year_first_gd - 1

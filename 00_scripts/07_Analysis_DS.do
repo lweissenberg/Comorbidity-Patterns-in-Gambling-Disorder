@@ -30,7 +30,6 @@ label var ano     "Anonymous ID"
 label var year    "Year"
 label var quarter "Quarter"
 label var yyyyq   "YearxQuarter"
-list if ano == 1, noobs clean 
 
 // 2: Merge with 'ana_grp_fixed_demo.dta'
 merge m:1 ano using "$data_work\ana_grp_fixed_demo.dta"
@@ -63,7 +62,7 @@ drop ana_grp_uc
 
 // 7: Drop obs. where we don't have information -> they are just there
 * because we created in Step 1 (above) a fully balanced df -> exp = 0 in some years where ind. is not insured 
-* -> insur type & sick_d_q == . most important indicators, if exp > 0 we assume he was insured 
+* -> insur type & sick_d_q == . most important indicators, if exp != 0 we assume he was insured 
 count 
 drop if (missing(total_exp) & missing(sick_d_q) & missing(keep_ind) & missing(insur_type)) ///
     | (total_exp == 0 & missing(insur_type) & missing(keep_ind) & missing(sick_d_q))

@@ -20,11 +20,7 @@ rename ausg_gesamt total_exp
 label variable year "Year"
 label variable total_exp "Total expenditures [€] reimbursed by the AOK"
 * interestingly we record 84 observations of neg. expenditures
-* -> reimbursement artefacts stemming from the repayment of unjustified 
-* sick leave money
-* we could set it to 0, but in reality it does not matter for this project 
-count if total_exp < 0 
-count if total_exp == . // never missing 
+* -> reimbursement artefacts
 keep ano year total_exp
 
 // 3: Save data
