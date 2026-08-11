@@ -12,7 +12,7 @@
 *******************************************************************/
 
 // 1. Import Data and merge
-* NOTE: the row order produced here is load-bearing. psmatch2 with
+* NOTE: the row order produced here determines matched-set composition. psmatch2 with
 * noreplacement matches treated units in the order they appear, so the
 * cases-then-controls order of this append determines which case gets which
 * control. Do not sort in a different way if you want to obtain exactly the same results. 
@@ -52,7 +52,7 @@ levelsof year if ever_gd & inrange(year, 2014, 2024), local(years)
 forvalues i = 1/2 {
     foreach y of local years {
 		di as text "=== Iteration `i' | Year `y' ==="
-        // load year y
+        // import year y
         use `matchdata', clear
         keep if year==`y'
         // exclude controls already used in previous iteration or year  
